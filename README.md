@@ -2,11 +2,11 @@
 
 ### Docker commands:
 
-##### docker build . -t **container name**
+##### docker build . -t *container name*
 
 "Buildea" el container.
 
-##### docker run -p 3000:3000 **container name**
+##### docker run -p 3000:3000 *container name*
 
 Corre una instancia del container
 

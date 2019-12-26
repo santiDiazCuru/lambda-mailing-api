@@ -10,7 +10,7 @@
 
 Corre una instancia del container
 
-### npm commands
+### npm commands:
 
 ##### npm run dev
 

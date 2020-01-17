@@ -20,12 +20,12 @@ Dentro de la carpeta dist se encuentra el código transpilado que viene de la ca
 
 #### /landing
 
-##### /consulta
+#####       /consulta
 
     Es un POST que debe tener los campos email, consulta y nombre, todos en string
     Se usa para las consultas básicas que llegan de la landing.
 
-##### /preinscripcion
+#####       /preinscripcion
 
     Es un POST que debe tener los campos email, consulta, nombre y curso, todos en string
     Además, curso solo puede ser "intro" o "bootcamp". De no ser así la ruta devuelve un 400

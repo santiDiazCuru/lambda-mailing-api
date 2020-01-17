@@ -1,0 +1,27 @@
+service: p5-mailing-service
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    API_KEY: key-223e5070502ee318dc3feddbc93878d7
+    DOMAIN: mg.plataforma5.la
+
+stage: dev
+region: sa-east-1
+
+plugins:
+  - serverless-offline
+
+functions:
+  consulta:
+    handler: dist/handler.consulta
+    events:
+      - http:
+          path: /landing/consulta
+          method: post
+  preinscripcion:
+    handler: dist/handler.preinscripcion
+    events:
+      - http:
+          path: landing/aplicar
+          method: post

@@ -1,25 +1,32 @@
-# Api genérica con node, typescript y express
+# Lambdas hechas con node y typescript para el servicio de mailing de P5
 
-### Docker commands:
+## ¿Cómo funciona?
 
-##### docker build . -t *container name*
+AWS no soporta typescript así que antes de hacer el deploy hay que transpilar todo a javascript. Los comandos más abajo mencionados lo hacen automáticamente. Primero, el flow de las funciones:
 
-"Buildea" el container.
+Hay un handler (una lambda) para cada ruta. Cuando el evento http llama a la función ocurren los siguientes pasos.
 
-##### docker run -p 3000:3000 *container name*
+- Se llama al controlador para validar que el request contenga la info necesaria para llevar a cabo la acción. Si está todo bien se llama al modelo. En caso contrario se devuelve un mensaje de error con el código http correspondiente.
 
-Corre una instancia del container
+- El modelo se encarga de armar el html del email con la informacion proveniente del request y luego llama a mailgunRepository.
 
-### npm commands:
+- Para mandar el mail, repository tiene una función que se llama asyncSendMail, que transforma la funcion que envía mails de mailgun-js en asíncrona con un bloque try catch. Por supuesto, esto devuelve un error si algo falla o un mensaje de éxito si el mail se envía correctamente.
 
-##### npm run dev
+El recorrido es simple pero hay un par de cosas a tener en cuenta.
 
-Corre una instancia de la aplicación directamente desde /src/index.ts con nodemon (como usa ts-node, transpila automáticamente a js)
+Dentro de la carpeta dist se encuentra el código transpilado que viene de la carpeta src. Dist además tiene una carpeta que no se debe borrar ya que no viene de la transpilación que es la que contiene a los templates para los emails.
 
-##### npm run build
+## RUTAS:
 
-Toma todo lo que está en la carpeta /src, lo convierte a js y lo guarda dentro de /dist. Si se quiere agregar un watcher para que el compilador quede escuchando se debe agregar el flag -w (quedaría "tsc -w").
+#### /landing
 
-##### npm start
+##### /consulta
 
-Ejecuta la aplicacion con node a partir de /dist. Tener en cuenta que para que funcione, hay que previamente haber corrido npm run build.
+    Es un POST que debe tener los campos email, consulta y nombre, todos en string
+    Se usa para las consultas básicas que llegan de la landing.
+
+##### /preinscripcion
+
+    Es un POST que debe tener los campos email, consulta, nombre y curso, todos en string
+    Además, curso solo puede ser "intro" o "bootcamp". De no ser así la ruta devuelve un 400
+    Se usa para las preinscripciones al curso que indica el body del request.

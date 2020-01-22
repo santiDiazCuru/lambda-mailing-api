@@ -2,9 +2,6 @@ service: p5-mailing-service
 provider:
   name: aws
   runtime: nodejs12.x
-  environment:
-    API_KEY: key-223e5070502ee318dc3feddbc93878d7
-    DOMAIN: mg.plataforma5.la
 
 stage: dev
 region: sa-east-1
